@@ -1,5 +1,6 @@
 use crate::Direction;
 use crate::GridPosition;
+use ggez::{ graphics, Context, GameResult };
 use std::collections::VecDeque;
 
 // Snake的head与body的组成
@@ -32,5 +33,9 @@ impl Snake {
 			next_dir: Direction::Right,
 			last_update_dir: None,
 		}
+	}
+
+	pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
+		todo!()
 	}
 }
