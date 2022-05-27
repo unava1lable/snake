@@ -6,9 +6,11 @@ const GRID_CELL_SIZE: (i16, i16) = (32, 32);
 const SCREEN_SIZE: (f32, f32) = ((GRID_SIZE.0 * GRID_CELL_SIZE.0) as f32,
                                  (GRID_SIZE.1 * GRID_CELL_SIZE.1) as f32);
 
+mod food;                                 
 mod grid;
 mod snake;
 
+pub use food::Food;
 pub use grid::{ GridPosition, Direction };
 pub use snake::Snake;
 
