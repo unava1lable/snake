@@ -26,6 +26,7 @@ impl GameState {
 
 impl event::EventHandler for GameState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
+        self.snake.update();
         Ok(())
     }
 

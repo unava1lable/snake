@@ -3,7 +3,8 @@ use crate::GridPosition;
 use ggez::{ graphics, Context, GameResult };
 use std::collections::VecDeque;
 
-// Snake的head与body的组成
+// 组成Snake的head与body的组件
+#[derive(Clone, Copy, Debug)]
 struct Segment {
 	pos: GridPosition
 }
@@ -18,8 +19,8 @@ pub struct Snake {
 	head: Segment,
 	body: VecDeque<Segment>,
 	dir: Direction,
-	next_dir: Direction,
-	last_update_dir: Option<Direction>,
+	next_dir: Option<Direction>,
+	last_update_dir: Direction,
 }
 
 impl Snake {
@@ -30,9 +31,22 @@ impl Snake {
 			head: Segment::new(pos),
 			body,
 			dir: Direction::Right,
-			next_dir: Direction::Right,
-			last_update_dir: None,
+			next_dir: None,
+			last_update_dir: Direction::Right,
 		}
+	}
+
+	pub fn update(&mut self) {
+		if self.last_update_dir == self.dir && self.next_dir.is_some() {
+			self.dir = self.next_dir.unwrap();
+			self.next_dir = None;
+		}
+
+		let new_head_pos = GridPosition::new_from_move(self.head.pos, self.dir);
+		let new_head = Segment::new(new_head_pos);
+		self.body.push_front(self.head);
+		self.head = new_head;
+		self.body.pop_back();
 	}
 
 	pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
