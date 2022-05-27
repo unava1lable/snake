@@ -25,9 +25,12 @@ impl GameState {
 }
 
 impl event::EventHandler for GameState {
-    fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
-        self.snake.update();
-        Ok(())
+    fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
+        while ggez::timer::check_update_time(ctx, 4) {
+            self.snake.update(); 
+        }
+        
+        Ok(()) 
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {

@@ -47,6 +47,7 @@ impl Snake {
 		self.body.push_front(self.head);
 		self.head = new_head;
 		self.body.pop_back();
+		self.last_update_dir = self.dir;
 	}
 
 	pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
