@@ -1,14 +1,28 @@
 use ggez::{Context, ContextBuilder, GameResult};
 use ggez::{conf, event, graphics};
 
-const SCREEN_SIZE: (f32, f32) = (960.0, 680.0);
+const GRID_SIZE: (u16, u16) = (30, 20);
+const GRID_CELL_SIZE: (u16, u16) = (32, 32);
+const SCREEN_SIZE: (f32, f32) = ((GRID_SIZE.0 * GRID_CELL_SIZE.0) as f32,
+                                 (GRID_SIZE.1 * GRID_CELL_SIZE.1) as f32);
 
 mod grid;
 mod snake;
 
 pub use grid::{ GridPosition, Direction };
+pub use snake::Snake;
 
-struct GameState {}
+struct GameState {
+    snake: Snake,
+}
+
+impl GameState {
+    fn new() -> Self {
+        Self {
+            snake: Snake::new((GRID_SIZE.0 / 4, GRID_SIZE.1 / 4).into())
+        }
+    }
+}
 
 impl event::EventHandler for GameState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult<()> {
@@ -17,6 +31,7 @@ impl event::EventHandler for GameState {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
+        self.snake.draw(ctx)?;
         graphics::present(ctx)?;
         Ok(())
     }
@@ -28,7 +43,7 @@ fn main() -> GameResult<()> {
         .window_mode(conf::WindowMode::default().dimensions(SCREEN_SIZE.0, SCREEN_SIZE.1))
         .build()?;
     
-    let game_state = GameState {};
+    let game_state = GameState::new();
 
     event::run(ctx, event_loop, game_state)
 }

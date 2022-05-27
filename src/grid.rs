@@ -1,8 +1,7 @@
 #![allow(unused)]
 use oorandom::Rand32;
 use ggez::graphics;
-
-const GRID_SIZE: (u16, u16) = (32, 32);
+use crate::{ GRID_SIZE, GRID_CELL_SIZE };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct GridPosition {
@@ -22,10 +21,10 @@ impl From<(u16, u16)> for GridPosition {
 impl From<GridPosition> for graphics::Rect {
 	fn from(pos: GridPosition) -> Self {
 		graphics::Rect::new_i32(
-			pos.x as i32 * GRID_SIZE.0 as i32,
-			pos.y as i32 * GRID_SIZE.1 as i32,
-			GRID_SIZE.0 as i32,
-			GRID_SIZE.1 as i32)
+			pos.x as i32 * GRID_CELL_SIZE.0 as i32,
+			pos.y as i32 * GRID_CELL_SIZE.1 as i32,
+			GRID_CELL_SIZE.0 as i32,
+			GRID_CELL_SIZE.1 as i32)
 	}
 }
 
