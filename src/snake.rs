@@ -36,6 +36,21 @@ impl Snake {
 	}
 
 	pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
-		todo!()
+		for body_seg in self.body.iter() {
+			let rectangle = graphics::Mesh::new_rectangle(
+				ctx,
+				graphics::DrawMode::fill(),
+				body_seg.pos.into(),
+				[0.3, 0.3, 0.0, 1.0].into())?;
+			graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
+		}
+
+		let rectangle = graphics::Mesh::new_rectangle(
+			ctx,
+			graphics::DrawMode::fill(),
+			self.head.pos.into(),
+			[1.0, 0.5, 0.0, 1.0].into())?;
+		graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
+		Ok(())
 	}
 }
