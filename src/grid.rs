@@ -1,4 +1,7 @@
+#![allow(unused)]
 use oorandom::Rand32;
+
+const GRID_SIZE: (u16, u16) = (32, 32);
 
 pub struct GridPosition {
     x: u16,
@@ -28,6 +31,15 @@ impl GridPosition {
             rng.rand_range(0..max_y as u32) as u16
         ).into()
     }
+
+	pub fn new_from_move(pos: GridPosition, dir: Direction) -> Self {
+		match dir {
+			Direction::Up => GridPosition::new(pos.x, (pos.y - 1) % GRID_SIZE.1),
+			Direction::Down => GridPosition::new(pos.x, (pos.y + 1) % GRID_SIZE.1),
+			Direction::Left => GridPosition::new((pos.x - 1) % GRID_SIZE.0, pos.y),
+			Direction::Right => GridPosition::new((pos.x + 1) % GRID_SIZE.0, pos.y),
+		}
+	}
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
