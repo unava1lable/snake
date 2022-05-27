@@ -36,6 +36,16 @@ impl event::EventHandler for GameState {
         graphics::present(ctx)?;
         Ok(())
     }
+
+    fn key_down_event(&mut self, _ctx: &mut Context, keycode: event::KeyCode, _keymods: event::KeyMods, _repeat: bool) {
+        if let Some(dir) = Direction::from_key(keycode) {
+            if self.snake.dir != self.snake.last_update_dir && self.snake.dir != dir.inverse() {
+                self.snake.next_dir = Some(dir);
+            } else if self.snake.last_update_dir != dir.inverse() {
+                self.snake.dir = dir;
+            }
+        }
+    }
 }
 
 fn main() -> GameResult<()> {

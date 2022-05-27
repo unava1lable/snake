@@ -80,13 +80,13 @@ impl Direction {
 		}
 	}
 
-	pub fn from_key(key: KeyCode) -> Self {
+	pub fn from_key(key: KeyCode) -> Option<Self> {
 		match key {
-			KeyCode::W | KeyCode::Up => Self::Up,
-			KeyCode::S | KeyCode::Down => Self::Down,
-			KeyCode::A | KeyCode::Left => Self::Left,
-			KeyCode::D | KeyCode::Right => Self::Right,
-			_ => panic!("Not valid key"),
+			KeyCode::W | KeyCode::Up => Some(Self::Up),
+			KeyCode::S | KeyCode::Down => Some(Self::Down),
+			KeyCode::A | KeyCode::Left => Some(Self::Left),
+			KeyCode::D | KeyCode::Right => Some(Self::Right),
+			_ => None,
 		}
 	}
 }

@@ -18,9 +18,9 @@ impl Segment {
 pub struct Snake {
 	head: Segment,
 	body: VecDeque<Segment>,
-	dir: Direction,
-	next_dir: Option<Direction>,
-	last_update_dir: Direction,
+	pub dir: Direction,
+	pub next_dir: Option<Direction>,
+	pub last_update_dir: Direction,
 }
 
 impl Snake {
