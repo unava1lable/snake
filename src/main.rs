@@ -4,6 +4,9 @@ use ggez::{conf, event, graphics};
 const SCREEN_SIZE: (f32, f32) = (960.0, 680.0);
 
 mod grid;
+mod snake;
+
+pub use grid::{ GridPosition, Direction };
 
 struct GameState {}
 

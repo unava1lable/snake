@@ -3,6 +3,7 @@ use oorandom::Rand32;
 
 const GRID_SIZE: (u16, u16) = (32, 32);
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct GridPosition {
     x: u16,
     y: u16,
@@ -39,6 +40,14 @@ impl GridPosition {
 			Direction::Left => GridPosition::new((pos.x - 1) % GRID_SIZE.0, pos.y),
 			Direction::Right => GridPosition::new((pos.x + 1) % GRID_SIZE.0, pos.y),
 		}
+	}
+
+	pub fn x(&self) -> u16 {
+		self.x
+	}
+
+	pub fn y(&self) -> u16 {
+		self.y
 	}
 }
 
