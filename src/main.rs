@@ -11,7 +11,7 @@ mod food;
 mod grid;
 mod snake;
 
-pub use food::Food;
+pub use food::{ Food, Ate };
 pub use grid::{ GridPosition, Direction };
 pub use snake::Snake;
 
@@ -40,7 +40,16 @@ impl GameState {
 impl event::EventHandler for GameState {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         while ggez::timer::check_update_time(ctx, 4) {
-            self.snake.update(); 
+            self.snake.update(&self.food);
+            if let Some(food) = self.snake.ate {
+                match food {
+                    Ate::Food => {
+                        let food_pos = GridPosition::random(&mut self.rng, GRID_SIZE.0, GRID_SIZE.1);
+                        self.food = Food::new(food_pos);
+                    },
+                    Ate::Snake => panic!(),
+                }
+            }
         }
         
         Ok(()) 

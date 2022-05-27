@@ -2,7 +2,7 @@ use crate::GridPosition;
 use ggez::{ Context, GameResult, graphics };
 
 pub struct Food {
-	pos: GridPosition,
+	pub pos: GridPosition,
 }
 
 impl Food {
@@ -23,4 +23,10 @@ impl Food {
 
 		Ok(())
 	}
+}
+
+#[derive(Clone, Copy, Debug)]
+pub enum Ate {
+	Food,
+	Snake,
 }

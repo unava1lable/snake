@@ -1,10 +1,12 @@
+use crate::Ate;
 use crate::Direction;
+use crate::Food;
 use crate::GridPosition;
 use ggez::{ graphics, Context, GameResult };
 use std::collections::VecDeque;
 
 // 组成Snake的head与body的组件
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct Segment {
 	pos: GridPosition
 }
@@ -18,6 +20,7 @@ impl Segment {
 pub struct Snake {
 	head: Segment,
 	body: VecDeque<Segment>,
+	pub ate: Option<Ate>,
 	pub dir: Direction,
 	pub next_dir: Option<Direction>,
 	pub last_update_dir: Direction,
@@ -30,13 +33,27 @@ impl Snake {
 		Self {
 			head: Segment::new(pos),
 			body,
+			ate: None,
 			dir: Direction::Right,
 			next_dir: None,
 			last_update_dir: Direction::Right,
 		}
 	}
 
-	pub fn update(&mut self) {
+	fn eat_snake(&self) -> bool {
+		for body_seg in self.body.iter() {
+			if self.head.pos == body_seg.pos {
+				return true;
+			}
+		}
+		false
+	}
+
+	fn eat_food(&self, food: &Food) -> bool {
+		self.head.pos == food.pos
+	}
+
+	pub fn update(&mut self, food: &Food) {
 		if self.last_update_dir == self.dir && self.next_dir.is_some() {
 			self.dir = self.next_dir.unwrap();
 			self.next_dir = None;
@@ -46,7 +63,19 @@ impl Snake {
 		let new_head = Segment::new(new_head_pos);
 		self.body.push_front(self.head);
 		self.head = new_head;
-		self.body.pop_back();
+		
+		if self.eat_snake() {
+			self.ate = Some(Ate::Snake)
+		} else if self.eat_food(food) {
+			self.ate = Some(Ate::Food)
+		} else {
+			self.ate = None
+		}
+
+		if self.ate.is_none() {
+			self.body.pop_back();
+		}
+
 		self.last_update_dir = self.dir;
 	}
 
