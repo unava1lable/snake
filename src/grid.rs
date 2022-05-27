@@ -1,6 +1,7 @@
 #![allow(unused)]
 use oorandom::Rand32;
 use ggez::graphics;
+use ggez::event::KeyCode;
 use crate::{ GRID_SIZE, GRID_CELL_SIZE };
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -67,4 +68,25 @@ pub enum Direction {
 	Down,
 	Left,
 	Right,
+}
+
+impl Direction {
+	pub fn inverse(&self) -> Self {
+		match *self {
+			Self::Up => Self::Down,
+			Self::Down => Self::Up,
+			Self::Left => Self::Right,
+			Self::Right => Self::Left,
+		}
+	}
+
+	pub fn from_key(key: KeyCode) -> Self {
+		match key {
+			KeyCode::W | KeyCode::Up => Self::Up,
+			KeyCode::S | KeyCode::Down => Self::Down,
+			KeyCode::A | KeyCode::Left => Self::Left,
+			KeyCode::D | KeyCode::Right => Self::Right,
+			_ => panic!("Not valid key"),
+		}
+	}
 }
