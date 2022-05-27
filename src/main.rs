@@ -1,8 +1,8 @@
 use ggez::{Context, ContextBuilder, GameResult};
 use ggez::{conf, event, graphics};
 
-const GRID_SIZE: (u16, u16) = (30, 20);
-const GRID_CELL_SIZE: (u16, u16) = (32, 32);
+const GRID_SIZE: (i16, i16) = (30, 20);
+const GRID_CELL_SIZE: (i16, i16) = (32, 32);
 const SCREEN_SIZE: (f32, f32) = ((GRID_SIZE.0 * GRID_CELL_SIZE.0) as f32,
                                  (GRID_SIZE.1 * GRID_CELL_SIZE.1) as f32);
 
