@@ -18,7 +18,8 @@ pub use snake::Snake;
 struct GameState {
     snake: Snake,
     food: Food,
-    rng: Rand32
+    rng: Rand32,
+    running: bool
 }
 
 impl GameState {
@@ -33,6 +34,7 @@ impl GameState {
             snake: Snake::new(snake_pos),
             food: Food::new(food_pos),
             rng,
+            running: true,
         }
     }
 }
@@ -40,14 +42,16 @@ impl GameState {
 impl event::EventHandler for GameState {
     fn update(&mut self, ctx: &mut Context) -> GameResult<()> {
         while ggez::timer::check_update_time(ctx, 4) {
-            self.snake.update(&self.food);
-            if let Some(food) = self.snake.ate {
-                match food {
-                    Ate::Food => {
-                        let food_pos = GridPosition::random(&mut self.rng, GRID_SIZE.0, GRID_SIZE.1);
-                        self.food = Food::new(food_pos);
-                    },
-                    Ate::Snake => panic!(),
+            if self.running {
+                self.snake.update(&self.food);
+                if let Some(food) = self.snake.ate {
+                    match food {
+                        Ate::Food => {
+                            let food_pos = GridPosition::random(&mut self.rng, GRID_SIZE.0, GRID_SIZE.1);
+                            self.food = Food::new(food_pos);
+                        },
+                        Ate::Snake => self.running = false,
+                    }
                 }
             }
         }
