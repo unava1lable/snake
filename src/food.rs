@@ -2,7 +2,7 @@ use crate::GridPosition;
 use ggez::{ Context, GameResult, graphics };
 
 pub struct Food {
-	pub pos: GridPosition,
+	pos: GridPosition,
 }
 
 impl Food {
@@ -22,6 +22,10 @@ impl Food {
 		graphics::draw(ctx, &rectangle, (ggez::mint::Point2{ x: 0.0, y: 0.0 },))?;
 
 		Ok(())
+	}
+
+	pub fn pos(&self) -> GridPosition {
+		self.pos
 	}
 }
 

@@ -50,7 +50,7 @@ impl Snake {
 	}
 
 	fn eat_food(&self, food: &Food) -> bool {
-		self.head.pos == food.pos
+		self.head.pos == food.pos()
 	}
 
 	pub fn update(&mut self, food: &Food) {
