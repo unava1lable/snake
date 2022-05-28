@@ -44,7 +44,7 @@ impl event::EventHandler for GameState {
         while ggez::timer::check_update_time(ctx, 4) {
             if self.running {
                 self.snake.update(&self.food);
-                if let Some(food) = self.snake.ate {
+                if let Some(food) = self.snake.ate() {
                     match food {
                         Ate::Food => {
                             let food_pos = GridPosition::random(&mut self.rng, GRID_SIZE.0, GRID_SIZE.1);
@@ -69,10 +69,10 @@ impl event::EventHandler for GameState {
 
     fn key_down_event(&mut self, _ctx: &mut Context, keycode: event::KeyCode, _keymods: event::KeyMods, _repeat: bool) {
         if let Some(dir) = Direction::from_key(keycode) {
-            if self.snake.dir != self.snake.last_update_dir && self.snake.dir != dir.inverse() {
-                self.snake.next_dir = Some(dir);
-            } else if self.snake.last_update_dir != dir.inverse() {
-                self.snake.dir = dir;
+            if self.snake.dir() != self.snake.last_update_dir() && self.snake.dir() != dir.inverse() {
+                self.snake.set_next_dir(dir);
+            } else if self.snake.last_update_dir() != dir.inverse() {
+                self.snake.set_dir(dir);
             }
         }
     }

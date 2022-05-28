@@ -20,10 +20,10 @@ impl Segment {
 pub struct Snake {
 	head: Segment,
 	body: VecDeque<Segment>,
-	pub ate: Option<Ate>,
-	pub dir: Direction,
-	pub next_dir: Option<Direction>,
-	pub last_update_dir: Direction,
+	ate: Option<Ate>,
+	dir: Direction,
+	next_dir: Option<Direction>,
+	last_update_dir: Direction,
 }
 
 impl Snake {
@@ -96,5 +96,29 @@ impl Snake {
 			[1.0, 0.5, 0.0, 1.0].into())?;
 		graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
 		Ok(())
+	}
+
+	pub fn ate(&self) -> Option<Ate> {
+		self.ate
+	}
+
+	pub fn dir(&self) -> Direction {
+		self.dir
+	}
+
+	pub fn next_dir(&self) -> Option<Direction> {
+		self.next_dir
+	}
+
+	pub fn last_update_dir(&self) -> Direction {
+		self.last_update_dir
+	}
+
+	pub fn set_dir(&mut self, dir: Direction) {
+		self.dir = dir;
+	}
+
+	pub fn set_next_dir(&mut self, dir: Direction) {
+		self.next_dir = Some(dir);
 	}
 }
