@@ -1,6 +1,7 @@
 use getrandom;
 use ggez::{Context, ContextBuilder, GameResult, conf, event, graphics};
 use oorandom::Rand32;
+use std::{ time, thread };
 
 const GRID_SIZE: (i16, i16) = (30, 20);
 const GRID_CELL_SIZE: (i16, i16) = (32, 32);
@@ -19,7 +20,8 @@ struct GameState {
     snake: Snake,
     food: Food,
     rng: Rand32,
-    running: bool
+    running: bool,
+    show_starting_menu: Option<String>,
 }
 
 impl GameState {
@@ -35,6 +37,7 @@ impl GameState {
             food: Food::new(food_pos),
             rng,
             running: true,
+            show_starting_menu: Some("Starting: ".to_string()),
         }
     }
 }
@@ -61,7 +64,18 @@ impl event::EventHandler for GameState {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
-        self.snake.draw(ctx)?;
+        if let Some(ref text) = &self.show_starting_menu {
+            for secs in (1..=3).rev() {
+                graphics::clear(ctx, [1.0, 1.0, 1.0, 1.0].into());
+                let text = format!("{}{}", text, secs);
+                let text_fragment = graphics::TextFragment::new(text).color([0.0, 0.0, 0.0, 1.0]);
+                graphics::draw(ctx, &(graphics::Text::new(text_fragment)), (ggez::mint::Point2{x: 0.0, y: 0.0},))?;
+                graphics::present(ctx)?;
+                thread::sleep(time::Duration::from_secs(1));
+            }
+            self.show_starting_menu = None;
+        }
+        self.snake.draw(ctx)?;            
         self.food.draw(ctx)?;
         graphics::present(ctx)?;
         Ok(())
